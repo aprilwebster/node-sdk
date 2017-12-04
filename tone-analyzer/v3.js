@@ -57,6 +57,7 @@ ToneAnalyzerV3.URL = 'https://gateway.watsonplatform.net/tone-analyzer/api';
  * - `isHTML`: A boolean value telling that the `params.text` argument is
  *    to be trated as HTML contents. On HTML input, the services does
  *    cleanup of tags and performs the analysis on the text contents only.
+ * - `language`: Language of the input. It defaults to `en`.
  *
  * @return upon success, the callback function is called with an object
  * containing the different tones (emotion, writing and social) analyzed.
@@ -70,6 +71,16 @@ ToneAnalyzerV3.prototype.tone = function(params, callback) {
     return;
   }
   const contentType = params.isHTML ? 'text/html' : 'text/plain';
+
+  const headers = {
+    accept: 'application/json',
+    'content-type': contentType
+  };
+
+  if (params.language) {
+    headers['content-language'] = params.language;
+  }
+
   const parameters = {
     options: {
       url: '/v3/tone',
@@ -78,10 +89,7 @@ ToneAnalyzerV3.prototype.tone = function(params, callback) {
       qs: pick(params, ['tones', 'sentences'])
     },
     defaultOptions: extend(true, this._options, {
-      headers: {
-        accept: 'application/json',
-        'content-type': contentType
-      }
+      headers: headers
     })
   };
 
@@ -90,16 +98,16 @@ ToneAnalyzerV3.prototype.tone = function(params, callback) {
 
 /**
  * @param {Object} params The parameters to call the service
- * @param {Object} [params.headers] - The header parameters.
- * @param {string} [params.headers.accept-language=en] - The desired language of the response.
- * @param {string} [params.headers.content-type=application/json] - The content type of the request: application/json (the default).
- * @param {string} [params.headers.content-language=en] - The language of the input text for the request: en (English) (the default)
- * @param {string} [params.headers.accept=application/json] - The desired content type of the response: application/json (the default)
- * @param {string} [params.utterances] - The utterances to analyze.  Utterances must be a JSON object.
+ * @param {Object} [params.utterances] - The utterances to analyze.  Utterances must be a JSON object.
  *
  * @param callback The callback.
  */
 ToneAnalyzerV3.prototype.tone_chat = function(params, callback) {
+  // For backward compatibility
+  if (params && params.utterances && params.utterances.utterances) {
+    params.utterances = params.utterances.utterances;
+  }
+
   const parameters = {
     requiredParams: ['utterances'],
     originalParams: params,
