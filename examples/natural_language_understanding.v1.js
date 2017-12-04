@@ -1,7 +1,6 @@
 'use strict';
-
-var fs = require('fs');
-var NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
+const fs = require('fs');
+const NaturalLanguageUnderstandingV1 = require('watson-developer-cloud/natural-language-understanding/v1.js');
 require('dotenv').config({ silent: true }); //  optional
 
 const nlu = new NaturalLanguageUnderstandingV1({
@@ -9,10 +8,10 @@ const nlu = new NaturalLanguageUnderstandingV1({
   // NATURAL_LANGUAGE_UNDERSTANDING_USERNAME &  NATURAL_LANGUAGE_UNDERSTANDING_PASSWORD
   // username: '<username>'.
   // password: '<password>',
-  version_date: NaturalLanguageUnderstandingV1.VERSION_DATE_2017_02_27
+  version_date: NaturalLanguageUnderstandingV1.VERSION_DATE_2016_01_23
 });
 
-var filename = '../test/resources/natural_language_understanding/energy-policy.html';
+const filename = '../test/resources/natural_language_understanding/energy-policy.html';
 fs.readFile(filename, 'utf-8', function(file_error, file_data) {
   if (file_error) {
     console.log(file_error);

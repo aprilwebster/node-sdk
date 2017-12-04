@@ -23,7 +23,7 @@ describe('text_to_speech', function() {
   };
   const synthesize_path = '/v1/synthesize';
   const voices_path = '/v1/voices';
-  const synthesize_request = synthesize_path + '?' + qs.stringify(omit(service_request, ['text', 'accept']));
+  const synthesize_request = synthesize_path + '?' + qs.stringify(omit(service_request, 'text'));
 
   const mock_voices = [
     {
@@ -92,7 +92,13 @@ describe('text_to_speech', function() {
       const req = text_to_speech.synthesize(service_request, noop);
       assert.equal(req.uri.href, service.url + synthesize_request);
       assert.equal(req.method, 'POST');
-      assert.equal(req.headers['Content-Type'], 'application/json');
+      assert.equal(req.headers['content-type'], 'application/json');
+    });
+
+    it('should support the X-Watson-Learning-Opt-Out option', function() {
+      const params = { 'X-Watson-Learning-Opt-Out': true, text: 'test' };
+      const req = text_to_speech.synthesize(params, noop);
+      assert.equal(req.headers['X-Watson-Learning-Opt-Out'], '1');
     });
 
     it('should support the customization_id option', function() {

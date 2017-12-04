@@ -15,8 +15,7 @@ const personality_insights = new PersonalityInsightsV3({
  */
 personality_insights.profile(
   {
-    content: 'Enter more than 100 unique words here...',
-    content_type: 'text/plain',
+    text: 'Enter more than 100 unique words here...',
     consumption_preferences: true
   },
   function(err, response) {
@@ -35,9 +34,8 @@ personality_insights.profile(
  */
 personality_insights.profile(
   {
-    content: 'Ingrese un texto de más de 100 palabras aquí...',
-    content_type: 'text/plain',
-    content_language: 'es'
+    text: 'Ingrese un texto de más de 100 palabras aquí...',
+    headers: { 'Content-Language': 'es' }
   },
   function(err, response) {
     if (err) {
@@ -58,10 +56,8 @@ personality_insights.profile(
  */
 personality_insights.profile(
   {
-    content: 'Ingrese un texto de más de 100 palabras aquí...',
-    content_type: 'text/plain',
-    content_language: 'es',
-    accept_language: 'es'
+    text: 'Ingrese un texto de más de 100 palabras aquí...',
+    headers: { 'Content-Language': 'es', 'Accept-Language': 'es' }
   },
   function(err, response) {
     if (err) {
@@ -77,9 +73,9 @@ personality_insights.profile(
  * https://www.ibm.com/watson/developercloud/doc/personality-insights/output.shtml#outputCSV
  */
 personality_insights
-  .profile_csv({
-    content: 'Enter more than 100 unique words here...',
-    content_type: 'text/plain',
-    csv_headers: true
+  .profile({
+    text: 'Enter more than 100 unique words here...',
+    csv_headers: true,
+    headers: { Accept: 'text/csv' }
   })
   .pipe(fs.createWriteStream('./output.csv'));

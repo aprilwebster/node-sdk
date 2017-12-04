@@ -1,17 +1,16 @@
 'use strict';
 
-var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
-var fs = require('fs');
+const VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
+const fs = require('fs');
 
-var visual_recognition = new VisualRecognitionV3({
+const visual_recognition = new VisualRecognitionV3({
   api_key: 'INSERT YOUR API KEY HERE',
   version_date: VisualRecognitionV3.VERSION_DATE_2016_05_20
 });
 
-var params = {
-  // An image file (.jpg, .png) or .zip file with images
-  // images_file: fs.createReadStream('./resources/car.png')
-  images_file: fs.createReadStream('./resources/images.zip')
+const params = {
+  // must be a .zip file containing images
+  images_file: fs.createReadStream('./resources/car.png')
 };
 
 visual_recognition.classify(params, function(err, res) {

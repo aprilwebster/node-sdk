@@ -1,22 +1,23 @@
 'use strict';
+/* eslint-env es6*/
 
-var ConversationV1 = require('watson-developer-cloud/conversation/v1');
+const watson = require('watson-developer-cloud');
 
 /**
  * Instantiate the Watson Conversation Service
  */
-var conversation = new ConversationV1({
+const conversation = new watson.ConversationV1({
   username: process.env.CONVERSATION_USERNAME || '<conversation_username>',
   password: process.env.CONVERSATION_PASSWORD || '<conversation_password>',
-  version_date: ConversationV1.VERSION_DATE_2017_05_26
+  version_date: watson.ConversationV1.VERSION_DATE_2017_05_26
 });
 
 /**
  * Calls the conversation message api.
  * returns a promise
  */
-var message = function(text, context) {
-  var payload = {
+const message = function(text, context) {
+  const payload = {
     workspace_id: process.env.WORKSPACE_ID || '<workspace_id>',
     input: {
       text: text
@@ -49,9 +50,7 @@ message('first message', undefined)
   })
   .then(response2 => {
     console.log(JSON.stringify(response2, null, 2), '\n--------');
-    console.log(
-      'Note that the two reponses should have the same context.conversation_id'
-    );
+    console.log('Note that the two reponses should have the same context.conversation_id');
   })
   .catch(err => {
     // APPLICATION-SPECIFIC CODE TO PROCESS THE ERROR

@@ -30,24 +30,23 @@
 'use strict';
 /* eslint-env es6*/
 
-var ConversationV1 = require('watson-developer-cloud/conversation/v1');
-var ToneAnalyzerV3 = require('watson-developer-cloud/tone-analyzer/v3');
-var tone_detection = require('./tone_detection.js');
+const watson = require('watson-developer-cloud');
+const tone_detection = require('./tone_detection.js');
 require('dotenv').config({ silent: true });
 
 /**
  * Instantiate the Watson Conversation Service
  */
-var conversation = new ConversationV1({
+const conversation = new watson.ConversationV1({
   username: process.env.CONVERSATION_USERNAME || '<conversation_username>',
   password: process.env.CONVERSATION_PASSWORD || '<conversation_password>',
-  version_date: ConversationV1.VERSION_DATE_2017_09_01
+  version_date: watson.ConversationV1.VERSION_DATE_2016_09_20
 });
 
 /**
  * Instantiate the Watson Tone Analyzer Service
  */
-var tone_analyzer = new ToneAnalyzerV3({
+const tone_analyzer = new watson.ToneAnalyzerV3({
   username: process.env.TONE_ANALYZER_USERNAME || '<tone_analyzer_username>',
   password: process.env.TONE_ANALYZER_PASSWORD || '<tone_analyzer_password>',
   version_date: '2016-05-19'
@@ -57,13 +56,13 @@ var tone_analyzer = new ToneAnalyzerV3({
  * This example stores tone for each user utterance in conversation context.
  * Change this to false, if you do not want to maintain history
  */
-var maintainToneHistoryInContext = true;
+const maintainToneHistoryInContext = true;
 
 /**
  * Payload for the Watson Conversation Service
  * <workspace-id> and user input text required.
  */
-var payload = {
+const payload = {
   workspace_id: process.env.WORKSPACE_ID || '<workspace_id>',
   input: {
     text: 'I am not happy today :('
@@ -84,11 +83,7 @@ function invokeToneConversation(payload, maintainToneHistoryInContext) {
   tone_detection
     .invokeToneAsync(payload, tone_analyzer)
     .then(tone => {
-      tone_detection.updateUserTone(
-        payload,
-        tone,
-        maintainToneHistoryInContext
-      );
+      tone_detection.updateUserTone(payload, tone, maintainToneHistoryInContext);
       conversation.message(payload, function(err, data) {
         if (err) {
           // APPLICATION-SPECIFIC CODE TO PROCESS THE ERROR

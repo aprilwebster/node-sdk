@@ -27,10 +27,7 @@ discovery.addDocument(
     file: file
   },
   function(error, data) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log(data);
-    }
+    console.log(error);
+    console.log(data);
   }
 );
